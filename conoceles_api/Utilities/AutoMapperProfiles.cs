@@ -53,6 +53,10 @@ namespace conoceles_api.Utilities
 
             CreateMap<RespuestaPreguntaFormularioDTO, RespuestaPreguntaFormulario>();
             CreateMap<RespuestaPreguntaFormulario, RespuestaPreguntaFormularioDTO>();
+
+            CreateMap<Claim, ClaimDTO>();
+            CreateMap<ClaimDTO, Claim>();
+
         }
     }
 }

@@ -2,6 +2,9 @@
 using conoceles_api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace conoceles_api.Controllers
 {
@@ -10,10 +13,12 @@ namespace conoceles_api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthorizationService authService;
+        private readonly ILogger<AuthController> logger;
 
-        public AuthController(IAuthorizationService authService)
+        public AuthController(IAuthorizationService authService, ILogger<AuthController> logger)
         {
             this.authService = authService;
+            this.logger = logger;
         }
 
         [HttpPost("login")]
@@ -27,12 +32,14 @@ namespace conoceles_api.Controllers
 
                 return Ok(result);
             }
-
             catch (Exception ex)
             {
-                return StatusCode(500);
+                // Loguea la excepción para obtener más detalles
+                logger.LogError(ex, "Error durante la autenticación del usuario.");
+
+                // Devuelve una respuesta con detalles del error
+                return StatusCode(500, new { ErrorMessage = "Ocurrió un error durante la autenticación del usuario.", Exception = ex.Message });
             }
         }
-
     }
 }
