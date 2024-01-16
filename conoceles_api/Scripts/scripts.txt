@@ -1,0 +1,135 @@
+INSERT INTO municipios (nombre)
+VALUES 
+('Amaxac de Guerrero'),
+('Apetatitlán de Antonio Carvajal'),
+('Atlangatepec'),
+('Atltzayanca'),
+('Apizaco'),
+('Calpulalpan'),
+('El Carmen Tequexquitla'),
+('Cuapiaxtla'),
+('Cuaxomulco'),
+('Chiautempan'),
+('Muñoz de Domingo Arenas'),
+('Españita'),
+('Huamantla'),
+('Hueyotlipan'),
+('Ixtacuixtla de Mariano Matamoros'),
+('Ixtenco'),
+('Mazatecochco de José María Morelos'),
+('Contla de Juan Cuamatzi'),
+('Tepetitla de Lardizábal'),
+('Sanctórum de Lázaro Cárdenas'),
+('Nanacamilpa de Mariano Arista'),
+('Acuamanala de Miguel Hidalgo'),
+('Natívitas'),
+('Panotla'),
+('San Pablo del Monte'),
+('Santa Cruz Tlaxcala'),
+('Tenancingo'),
+('Teolocholco'),
+('Tepeyanco'),
+('Terrenate'),
+('Tetla de la Solidaridad'),
+('Tetlatlahuca'),
+('Tlaxcala'),
+('Tlaxco'),
+('Tocatlán'),
+('Totolac'),
+('Ziltlaltépec de Trinidad Sánchez Santos'),
+('Tzompantepec'),
+('Xaloztoc'),
+('Xaltocan'),
+('Papalotla de Xicohténcatl'),
+('Xicohtzinco'),
+('Yauhquemehcan'),
+('Zacatelco'),
+('Benito Juárez'),
+('Emiliano Zapata'),
+('Lázaro Cárdenas'),
+('La Magdalena Tlaltelulco'),
+('San Damián Texóloc'),
+('San Francisco Tetlanohcan'),
+('San Jerónimo Zacualpan'),
+('San José Teacalco'),
+('San Juan Huactzinco'),
+('San Lorenzo Axocomanitla'),
+('San Lucas Tecopilco'),
+('Santa Ana Nopalucan'),
+('Santa Apolonia Teacalco'),
+('Santa Catarina Ayometla'),
+('Santa Cruz Quilehtla'),
+('Santa Isabel Xiloxoxtla');
+
+INSERT INTO rols (nombreRol)
+VALUES 
+('Administrador'),
+('Candidato');
+
+
+INSERT INTO claims (ClaimType, ClaimValue, RolId) VALUES
+('CanAccessInicio', 1, 1),
+('CanAccessUsuarios', 1, 1);
+
+
+INSERT INTO tiposorganizacionespoliticas (TipoOrganizacion)
+VALUES 
+('Partido Político'),
+('Candidatura Común'),
+('Coalición'),
+('Candidatura Independiente');
+
+
+INSERT INTO organizacionespoliticas (NombreOrganizacion, Logo, Estatus, TipoOrganizacionPoliticaId)
+VALUES 
+('Partido Acción Nacional', 'PAN204011014.png',1,1),
+('Movimiento Ciudadano','MC204447195.png',1,1),
+('Morena', 'MORENA204530270.png',1,1),
+('Partido Revolucionario Institucional', 'PRI25S.png',1,1);
+
+INSERT INTO generos (NombreGenero)
+VALUES 
+('Hombre'),
+('Mujer');
+
+INSERT INTO cargos (NombreCargo)
+VALUES 
+('Diputación'),
+('Senaduría Federal MR');
+
+INSERT INTO estados (NombreEstado)
+VALUES 
+('Aguascalientes'),
+('Baja California'),
+('Baja California Sur'),
+('Campeche'),
+('Chiapas'),
+('Chihuahua'),
+('Ciudad de México'),
+('Coahuila'),
+('Colima'),
+('Durango'),
+('Estado de México'),
+('Guanajuato'),
+('Guerrero'),
+('Hidalgo'),
+('Jalisco'),
+('Michoacán'),
+('Morelos'),
+('Nayarit'),
+('Nuevo León'),
+('Oaxaca'),
+('Puebla'),
+('Querétaro'),
+('Quintana Roo'),
+('San Luis Potosí'),
+('Sinaloa'),
+('Sonora'),
+('Tabasco'),
+('Tamaulipas'),
+('Tlaxcala'),
+('Veracruz'),
+('Yucatán'),
+('Zacatecas');
+
+
