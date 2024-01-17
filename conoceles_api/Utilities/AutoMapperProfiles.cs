@@ -27,11 +27,11 @@ namespace conoceles_api.Utilities
             CreateMap<Cargo, CargoDTO>();
             CreateMap<CargoDTO, Cargo>();
 
-            CreateMap<TipoOrganizacionPolitica, TipoOrganizacionPoliticaDTO>();
-            CreateMap<TipoOrganizacionPoliticaDTO, TipoOrganizacionPolitica>();
+            CreateMap<TipoAgrupacionPolitica, TipoAgrupacionPoliticaDTO>();
+            CreateMap<TipoAgrupacionPoliticaDTO, TipoAgrupacionPolitica>();
 
-            CreateMap<OrganizacionPolitica, OrganizacionPoliticaDTO>();
-            CreateMap<OrganizacionPoliticaDTO, OrganizacionPolitica>();
+            CreateMap<AgrupacionPolitica, AgrupacionPoliticaDTO>();
+            CreateMap<AgrupacionPoliticaDTO, AgrupacionPolitica>();
 
             CreateMap<Municipio, MunicipioDTO>();
             CreateMap<MunicipioDTO, Municipio>();

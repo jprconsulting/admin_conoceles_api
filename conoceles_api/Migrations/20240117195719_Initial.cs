@@ -132,7 +132,7 @@ namespace conocelesapi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "TiposOrganizacionesPoliticas",
+                name: "TiposAgrupacionesPoliticas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -142,7 +142,7 @@ namespace conocelesapi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TiposOrganizacionesPoliticas", x => x.Id);
+                    table.PrimaryKey("PK_TiposAgrupacionesPoliticas", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -192,12 +192,14 @@ namespace conocelesapi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "OrganizacionesPoliticas",
+                name: "AgrupacionesPoliticas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     NombreOrganizacion = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Acronimo = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Logo = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -206,11 +208,11 @@ namespace conocelesapi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrganizacionesPoliticas", x => x.Id);
+                    table.PrimaryKey("PK_AgrupacionesPoliticas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrganizacionesPoliticas_TiposOrganizacionesPoliticas_TipoOrg~",
+                        name: "FK_AgrupacionesPoliticas_TiposAgrupacionesPoliticas_TipoOrganiz~",
                         column: x => x.TipoOrganizacionPoliticaId,
-                        principalTable: "TiposOrganizacionesPoliticas",
+                        principalTable: "TiposAgrupacionesPoliticas",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -281,6 +283,11 @@ namespace conocelesapi.Migrations
                 {
                     table.PrimaryKey("PK_Candidatos", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Candidatos_AgrupacionesPoliticas_OrganizacionPoliticaId",
+                        column: x => x.OrganizacionPoliticaId,
+                        principalTable: "AgrupacionesPoliticas",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Candidatos_Cargos_CargoId",
                         column: x => x.CargoId,
                         principalTable: "Cargos",
@@ -294,11 +301,6 @@ namespace conocelesapi.Migrations
                         name: "FK_Candidatos_Generos_GeneroId",
                         column: x => x.GeneroId,
                         principalTable: "Generos",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Candidatos_OrganizacionesPoliticas_OrganizacionPoliticaId",
-                        column: x => x.OrganizacionPoliticaId,
-                        principalTable: "OrganizacionesPoliticas",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -397,6 +399,11 @@ namespace conocelesapi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AgrupacionesPoliticas_TipoOrganizacionPoliticaId",
+                table: "AgrupacionesPoliticas",
+                column: "TipoOrganizacionPoliticaId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AsignacionesFormulario_CandidatoId",
                 table: "AsignacionesFormulario",
                 column: "CandidatoId");
@@ -436,11 +443,6 @@ namespace conocelesapi.Migrations
                 table: "Formularios",
                 column: "ConfigGoogleFormId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrganizacionesPoliticas_TipoOrganizacionPoliticaId",
-                table: "OrganizacionesPoliticas",
-                column: "TipoOrganizacionPoliticaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PreguntasFormulario_FormularioId",
@@ -501,6 +503,9 @@ namespace conocelesapi.Migrations
                 name: "Formularios");
 
             migrationBuilder.DropTable(
+                name: "AgrupacionesPoliticas");
+
+            migrationBuilder.DropTable(
                 name: "Cargos");
 
             migrationBuilder.DropTable(
@@ -510,13 +515,10 @@ namespace conocelesapi.Migrations
                 name: "Generos");
 
             migrationBuilder.DropTable(
-                name: "OrganizacionesPoliticas");
-
-            migrationBuilder.DropTable(
                 name: "ConfigGoogleForm");
 
             migrationBuilder.DropTable(
-                name: "TiposOrganizacionesPoliticas");
+                name: "TiposAgrupacionesPoliticas");
         }
     }
 }

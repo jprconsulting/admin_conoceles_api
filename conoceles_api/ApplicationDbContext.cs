@@ -25,10 +25,10 @@ namespace conoceles_api
 
         public DbSet<Genero> Generos { get; set; }
         public DbSet<Formulario> Formularios { get; set; }
-        public DbSet<OrganizacionPolitica> OrganizacionesPoliticas { get; set; }
+        public DbSet<AgrupacionPolitica> AgrupacionesPoliticas { get; set; }
         public DbSet<PreguntaFormulario> PreguntasFormulario { get; set; }
         public DbSet<RespuestaPreguntaFormulario> RespuestasPreguntaFormulario { get; set; }
-        public DbSet<TipoOrganizacionPolitica> TiposOrganizacionesPoliticas { get; set; }
+        public DbSet<TipoAgrupacionPolitica> TiposAgrupacionesPoliticas { get; set; }
 
     }
 }

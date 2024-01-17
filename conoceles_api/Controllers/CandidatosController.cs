@@ -79,7 +79,7 @@ namespace conoceles_api.Controllers
             candidato.Genero = await context.Generos.SingleOrDefaultAsync(g => g.Id == dto.Genero.Id);
             candidato.Estado = await context.Estados.SingleOrDefaultAsync(e => e.Id == dto.Estado.Id);
             candidato.Cargo = await context.Cargos.SingleOrDefaultAsync(c => c.Id == dto.Cargo.Id);
-            candidato.OrganizacionPolitica = await context.OrganizacionesPoliticas
+            candidato.OrganizacionPolitica = await context.AgrupacionesPoliticas
                 .SingleOrDefaultAsync(o => o.Id == dto.OrganizacionPolitica.Id);
 
             context.Add(candidato);
@@ -131,7 +131,7 @@ namespace conoceles_api.Controllers
             candidato.Genero = await context.Generos.SingleOrDefaultAsync(g => g.Id == dto.Genero.Id);
             candidato.Estado = await context.Estados.SingleOrDefaultAsync(e => e.Id == dto.Estado.Id);
             candidato.Cargo = await context.Cargos.SingleOrDefaultAsync(c => c.Id == dto.Cargo.Id);
-            candidato.OrganizacionPolitica = await context.OrganizacionesPoliticas
+            candidato.OrganizacionPolitica = await context.AgrupacionesPoliticas
                 .SingleOrDefaultAsync(o => o.Id == dto.OrganizacionPolitica.Id);
 
             context.Update(candidato);

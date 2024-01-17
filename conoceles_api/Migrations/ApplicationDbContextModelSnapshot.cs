@@ -19,6 +19,34 @@ namespace conocelesapi.Migrations
                 .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("conoceles_api.Entities.AgrupacionPolitica", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Acronimo")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Estatus")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NombreOrganizacion")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("TipoOrganizacionPoliticaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TipoOrganizacionPoliticaId");
+
+                    b.ToTable("AgrupacionesPoliticas");
+                });
+
             modelBuilder.Entity("conoceles_api.Entities.AsignacionFormulario", b =>
                 {
                     b.Property<int>("Id")
@@ -279,31 +307,6 @@ namespace conocelesapi.Migrations
                     b.ToTable("Municipios");
                 });
 
-            modelBuilder.Entity("conoceles_api.Entities.OrganizacionPolitica", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Estatus")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Logo")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("NombreOrganizacion")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("TipoOrganizacionPoliticaId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TipoOrganizacionPoliticaId");
-
-                    b.ToTable("OrganizacionesPoliticas");
-                });
-
             modelBuilder.Entity("conoceles_api.Entities.PreguntaFormulario", b =>
                 {
                     b.Property<int>("Id")
@@ -361,7 +364,7 @@ namespace conocelesapi.Migrations
                     b.ToTable("Rols");
                 });
 
-            modelBuilder.Entity("conoceles_api.Entities.TipoOrganizacionPolitica", b =>
+            modelBuilder.Entity("conoceles_api.Entities.TipoAgrupacionPolitica", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -372,7 +375,7 @@ namespace conocelesapi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TiposOrganizacionesPoliticas");
+                    b.ToTable("TiposAgrupacionesPoliticas");
                 });
 
             modelBuilder.Entity("conoceles_api.Entities.Usuario", b =>
@@ -416,6 +419,15 @@ namespace conocelesapi.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("conoceles_api.Entities.AgrupacionPolitica", b =>
+                {
+                    b.HasOne("conoceles_api.Entities.TipoAgrupacionPolitica", "TipoOrganizacionPolitica")
+                        .WithMany("OrganizacionesPoliticas")
+                        .HasForeignKey("TipoOrganizacionPoliticaId");
+
+                    b.Navigation("TipoOrganizacionPolitica");
+                });
+
             modelBuilder.Entity("conoceles_api.Entities.AsignacionFormulario", b =>
                 {
                     b.HasOne("conoceles_api.Entities.Candidato", "Candidato")
@@ -445,7 +457,7 @@ namespace conocelesapi.Migrations
                         .WithMany("Candidatos")
                         .HasForeignKey("GeneroId");
 
-                    b.HasOne("conoceles_api.Entities.OrganizacionPolitica", "OrganizacionPolitica")
+                    b.HasOne("conoceles_api.Entities.AgrupacionPolitica", "OrganizacionPolitica")
                         .WithMany("Candidatos")
                         .HasForeignKey("OrganizacionPoliticaId");
 
@@ -478,15 +490,6 @@ namespace conocelesapi.Migrations
                         .IsRequired();
 
                     b.Navigation("ConfigGoogleForm");
-                });
-
-            modelBuilder.Entity("conoceles_api.Entities.OrganizacionPolitica", b =>
-                {
-                    b.HasOne("conoceles_api.Entities.TipoOrganizacionPolitica", "TipoOrganizacionPolitica")
-                        .WithMany("OrganizacionesPoliticas")
-                        .HasForeignKey("TipoOrganizacionPoliticaId");
-
-                    b.Navigation("TipoOrganizacionPolitica");
                 });
 
             modelBuilder.Entity("conoceles_api.Entities.PreguntaFormulario", b =>
@@ -530,6 +533,11 @@ namespace conocelesapi.Migrations
                     b.Navigation("Rol");
                 });
 
+            modelBuilder.Entity("conoceles_api.Entities.AgrupacionPolitica", b =>
+                {
+                    b.Navigation("Candidatos");
+                });
+
             modelBuilder.Entity("conoceles_api.Entities.AsignacionFormulario", b =>
                 {
                     b.Navigation("RespuestasPreguntasFormulario");
@@ -569,11 +577,6 @@ namespace conocelesapi.Migrations
                     b.Navigation("Candidatos");
                 });
 
-            modelBuilder.Entity("conoceles_api.Entities.OrganizacionPolitica", b =>
-                {
-                    b.Navigation("Candidatos");
-                });
-
             modelBuilder.Entity("conoceles_api.Entities.PreguntaFormulario", b =>
                 {
                     b.Navigation("RespuestasPreguntasFormulario");
@@ -586,7 +589,7 @@ namespace conocelesapi.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("conoceles_api.Entities.TipoOrganizacionPolitica", b =>
+            modelBuilder.Entity("conoceles_api.Entities.TipoAgrupacionPolitica", b =>
                 {
                     b.Navigation("OrganizacionesPoliticas");
                 });
