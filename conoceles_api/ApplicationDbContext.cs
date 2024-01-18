@@ -29,6 +29,9 @@ namespace conoceles_api
         public DbSet<PreguntaFormulario> PreguntasFormulario { get; set; }
         public DbSet<RespuestaPreguntaFormulario> RespuestasPreguntaFormulario { get; set; }
         public DbSet<TipoAgrupacionPolitica> TiposAgrupacionesPoliticas { get; set; }
+        public DbSet<DistritoLocal> DistritosLocales { get; set; }
+        public DbSet<Ayuntamiento> Ayuntamientos { get; set; }
+        public DbSet<Comunidad> Comunidades { get; set; }
 
     }
 }

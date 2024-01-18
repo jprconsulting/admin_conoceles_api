@@ -169,6 +169,32 @@ namespace conocelesapi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "DistritosLocales",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nombre = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Acronimo = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Peticion = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Estatus = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    EstadoId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DistritosLocales", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DistritosLocales_Estados_EstadoId",
+                        column: x => x.EstadoId,
+                        principalTable: "Estados",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Claims",
                 columns: table => new
                 {
@@ -239,6 +265,32 @@ namespace conocelesapi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Ayuntamientos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nombre = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Acronimo = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Peticion = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Estatus = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    DistritoLocalId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ayuntamientos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ayuntamientos_DistritosLocales_DistritoLocalId",
+                        column: x => x.DistritoLocalId,
+                        principalTable: "DistritosLocales",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Candidatos",
                 columns: table => new
                 {
@@ -301,6 +353,32 @@ namespace conocelesapi.Migrations
                         name: "FK_Candidatos_Generos_GeneroId",
                         column: x => x.GeneroId,
                         principalTable: "Generos",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Comunidades",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nombre = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Acronimo = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Peticion = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Estatus = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    AyuntamientoId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comunidades", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comunidades_Ayuntamientos_AyuntamientoId",
+                        column: x => x.AyuntamientoId,
+                        principalTable: "Ayuntamientos",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -414,6 +492,11 @@ namespace conocelesapi.Migrations
                 column: "FormularioId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Ayuntamientos_DistritoLocalId",
+                table: "Ayuntamientos",
+                column: "DistritoLocalId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Candidatos_CargoId",
                 table: "Candidatos",
                 column: "CargoId");
@@ -437,6 +520,16 @@ namespace conocelesapi.Migrations
                 name: "IX_Claims_RolId",
                 table: "Claims",
                 column: "RolId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comunidades_AyuntamientoId",
+                table: "Comunidades",
+                column: "AyuntamientoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DistritosLocales_EstadoId",
+                table: "DistritosLocales",
+                column: "EstadoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Formularios_ConfigGoogleFormId",
@@ -479,6 +572,9 @@ namespace conocelesapi.Migrations
                 name: "Claims");
 
             migrationBuilder.DropTable(
+                name: "Comunidades");
+
+            migrationBuilder.DropTable(
                 name: "Municipios");
 
             migrationBuilder.DropTable(
@@ -488,6 +584,9 @@ namespace conocelesapi.Migrations
                 name: "Usuarios");
 
             migrationBuilder.DropTable(
+                name: "Ayuntamientos");
+
+            migrationBuilder.DropTable(
                 name: "AsignacionesFormulario");
 
             migrationBuilder.DropTable(
@@ -495,6 +594,9 @@ namespace conocelesapi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Rols");
+
+            migrationBuilder.DropTable(
+                name: "DistritosLocales");
 
             migrationBuilder.DropTable(
                 name: "Candidatos");

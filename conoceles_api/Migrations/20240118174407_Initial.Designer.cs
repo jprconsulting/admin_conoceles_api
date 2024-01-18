@@ -11,7 +11,7 @@ using conoceles_api;
 namespace conocelesapi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240117195719_Initial")]
+    [Migration("20240118174407_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -78,6 +78,34 @@ namespace conocelesapi.Migrations
                     b.HasIndex("FormularioId");
 
                     b.ToTable("AsignacionesFormulario");
+                });
+
+            modelBuilder.Entity("conoceles_api.Entities.Ayuntamiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Acronimo")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("DistritoLocalId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Estatus")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Peticion")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DistritoLocalId");
+
+                    b.ToTable("Ayuntamientos");
                 });
 
             modelBuilder.Entity("conoceles_api.Entities.Candidato", b =>
@@ -195,6 +223,34 @@ namespace conocelesapi.Migrations
                     b.ToTable("Claims");
                 });
 
+            modelBuilder.Entity("conoceles_api.Entities.Comunidad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Acronimo")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("AyuntamientoId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Estatus")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Peticion")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AyuntamientoId");
+
+                    b.ToTable("Comunidades");
+                });
+
             modelBuilder.Entity("conoceles_api.Entities.ConfigGoogleForm", b =>
                 {
                     b.Property<int>("Id")
@@ -246,6 +302,34 @@ namespace conocelesapi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ConfigGoogleForm");
+                });
+
+            modelBuilder.Entity("conoceles_api.Entities.DistritoLocal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Acronimo")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Estatus")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Peticion")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstadoId");
+
+                    b.ToTable("DistritosLocales");
                 });
 
             modelBuilder.Entity("conoceles_api.Entities.Estado", b =>
@@ -446,6 +530,15 @@ namespace conocelesapi.Migrations
                     b.Navigation("Formulario");
                 });
 
+            modelBuilder.Entity("conoceles_api.Entities.Ayuntamiento", b =>
+                {
+                    b.HasOne("conoceles_api.Entities.DistritoLocal", "DistritoLocal")
+                        .WithMany("Ayuntamientos")
+                        .HasForeignKey("DistritoLocalId");
+
+                    b.Navigation("DistritoLocal");
+                });
+
             modelBuilder.Entity("conoceles_api.Entities.Candidato", b =>
                 {
                     b.HasOne("conoceles_api.Entities.Cargo", "Cargo")
@@ -482,6 +575,24 @@ namespace conocelesapi.Migrations
                         .IsRequired();
 
                     b.Navigation("Rol");
+                });
+
+            modelBuilder.Entity("conoceles_api.Entities.Comunidad", b =>
+                {
+                    b.HasOne("conoceles_api.Entities.Ayuntamiento", "Ayuntamiento")
+                        .WithMany()
+                        .HasForeignKey("AyuntamientoId");
+
+                    b.Navigation("Ayuntamiento");
+                });
+
+            modelBuilder.Entity("conoceles_api.Entities.DistritoLocal", b =>
+                {
+                    b.HasOne("conoceles_api.Entities.Estado", "Estado")
+                        .WithMany("DistritosLocales")
+                        .HasForeignKey("EstadoId");
+
+                    b.Navigation("Estado");
                 });
 
             modelBuilder.Entity("conoceles_api.Entities.Formulario", b =>
@@ -563,9 +674,16 @@ namespace conocelesapi.Migrations
                     b.Navigation("Formulario");
                 });
 
+            modelBuilder.Entity("conoceles_api.Entities.DistritoLocal", b =>
+                {
+                    b.Navigation("Ayuntamientos");
+                });
+
             modelBuilder.Entity("conoceles_api.Entities.Estado", b =>
                 {
                     b.Navigation("Candidatos");
+
+                    b.Navigation("DistritosLocales");
                 });
 
             modelBuilder.Entity("conoceles_api.Entities.Formulario", b =>

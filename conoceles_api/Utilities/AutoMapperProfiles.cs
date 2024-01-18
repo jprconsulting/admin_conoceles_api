@@ -36,6 +36,14 @@ namespace conoceles_api.Utilities
             CreateMap<Municipio, MunicipioDTO>();
             CreateMap<MunicipioDTO, Municipio>();
 
+            CreateMap<Ayuntamiento, AyuntamientoDTO>()
+                   .ForMember(dest => dest.DistritoLocal, opt => opt.MapFrom(src => src.DistritoLocal));
+            CreateMap<AyuntamientoDTO, Ayuntamiento>();
+
+            CreateMap<Comunidad, ComunidadDTO>()
+       .ForMember(dest => dest.Ayuntamiento, opt => opt.MapFrom(src => src.Ayuntamiento));
+            CreateMap<ComunidadDTO, Comunidad>();
+
             CreateMap<Candidato, CandidatoDTO>();
             CreateMap<CandidatoDTO, Candidato>();
 
@@ -57,6 +65,9 @@ namespace conoceles_api.Utilities
             CreateMap<Claim, ClaimDTO>();
             CreateMap<ClaimDTO, Claim>();
 
+            CreateMap<DistritoLocal, DistritoLocalDTO>()
+                  .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado));
+            CreateMap<DistritoLocalDTO, DistritoLocal>();
         }
     }
 }
