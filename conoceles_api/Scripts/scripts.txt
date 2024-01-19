@@ -63,8 +63,8 @@ VALUES
 
 INSERT INTO conoceles2.rols (nombreRol)
 VALUES 
-('Administrador'),
-('Candidato');
+('Candidato'),
+('Administrador');
 
 
 INSERT INTO conoceles2.claims (ClaimType, ClaimValue, RolId) VALUES

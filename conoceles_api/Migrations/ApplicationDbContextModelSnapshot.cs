@@ -497,8 +497,7 @@ namespace conocelesapi.Migrations
                     b.HasIndex("CandidatoId")
                         .IsUnique();
 
-                    b.HasIndex("RolId")
-                        .IsUnique();
+                    b.HasIndex("RolId");
 
                     b.ToTable("Usuarios");
                 });
@@ -634,8 +633,8 @@ namespace conocelesapi.Migrations
                         .HasForeignKey("conoceles_api.Entities.Usuario", "CandidatoId");
 
                     b.HasOne("conoceles_api.Entities.Rol", "Rol")
-                        .WithOne("Usuario")
-                        .HasForeignKey("conoceles_api.Entities.Usuario", "RolId")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("RolId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -704,7 +703,7 @@ namespace conocelesapi.Migrations
                 {
                     b.Navigation("Claims");
 
-                    b.Navigation("Usuario");
+                    b.Navigation("Usuarios");
                 });
 
             modelBuilder.Entity("conoceles_api.Entities.TipoAgrupacionPolitica", b =>
