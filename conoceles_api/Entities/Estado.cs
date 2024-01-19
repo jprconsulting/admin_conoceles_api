@@ -5,5 +5,6 @@
         public int Id { get; set; }
         public string NombreEstado { get; set; }
         public List<Candidato> Candidatos { get; set; }
+        public List<DistritoLocal> DistritosLocales { get; set; }
     }
 }

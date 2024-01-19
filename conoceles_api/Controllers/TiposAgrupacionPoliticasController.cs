@@ -8,28 +8,28 @@ namespace conoceles_api.Controllers
 {
     [Route("api/tipos-organizaciones-politicas")]
     [ApiController]
-    public class TiposOrganizacionesPoliticasController : ControllerBase
+    public class TiposAgrupacionPoliticasController : ControllerBase
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
 
-        public TiposOrganizacionesPoliticasController(ApplicationDbContext context, IMapper mapper)
+        public TiposAgrupacionPoliticasController(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
         }
 
         [HttpGet("obtener-todos")]
-        public async Task<ActionResult<List<TipoOrganizacionPoliticaDTO>>> GetAll()
+        public async Task<ActionResult<List<TipoAgrupacionPoliticaDTO>>> GetAll()
         {
-            var tiposOrganizacionesPoliticas = await context.TiposOrganizacionesPoliticas.ToListAsync();
+            var tiposOrganizacionesPoliticas = await context.TiposAgrupacionesPoliticas.ToListAsync();
 
             if (!tiposOrganizacionesPoliticas.Any())
             {
                 return NotFound();
             }
 
-            return Ok(mapper.Map<List<TipoOrganizacionPoliticaDTO>>(tiposOrganizacionesPoliticas));
+            return Ok(mapper.Map<List<TipoAgrupacionPoliticaDTO>>(tiposOrganizacionesPoliticas));
         }
     }
 }

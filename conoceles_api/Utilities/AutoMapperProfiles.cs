@@ -27,14 +27,22 @@ namespace conoceles_api.Utilities
             CreateMap<Cargo, CargoDTO>();
             CreateMap<CargoDTO, Cargo>();
 
-            CreateMap<TipoOrganizacionPolitica, TipoOrganizacionPoliticaDTO>();
-            CreateMap<TipoOrganizacionPoliticaDTO, TipoOrganizacionPolitica>();
+            CreateMap<TipoAgrupacionPolitica, TipoAgrupacionPoliticaDTO>();
+            CreateMap<TipoAgrupacionPoliticaDTO, TipoAgrupacionPolitica>();
 
-            CreateMap<OrganizacionPolitica, OrganizacionPoliticaDTO>();
-            CreateMap<OrganizacionPoliticaDTO, OrganizacionPolitica>();
+            CreateMap<AgrupacionPolitica, AgrupacionPoliticaDTO>();
+            CreateMap<AgrupacionPoliticaDTO, AgrupacionPolitica>();
 
             CreateMap<Municipio, MunicipioDTO>();
             CreateMap<MunicipioDTO, Municipio>();
+
+            CreateMap<Ayuntamiento, AyuntamientoDTO>()
+                   .ForMember(dest => dest.DistritoLocal, opt => opt.MapFrom(src => src.DistritoLocal));
+            CreateMap<AyuntamientoDTO, Ayuntamiento>();
+
+            CreateMap<Comunidad, ComunidadDTO>()
+       .ForMember(dest => dest.Ayuntamiento, opt => opt.MapFrom(src => src.Ayuntamiento));
+            CreateMap<ComunidadDTO, Comunidad>();
 
             CreateMap<Candidato, CandidatoDTO>();
             CreateMap<CandidatoDTO, Candidato>();
@@ -53,6 +61,13 @@ namespace conoceles_api.Utilities
 
             CreateMap<RespuestaPreguntaFormularioDTO, RespuestaPreguntaFormulario>();
             CreateMap<RespuestaPreguntaFormulario, RespuestaPreguntaFormularioDTO>();
+
+            CreateMap<Claim, ClaimDTO>();
+            CreateMap<ClaimDTO, Claim>();
+
+            CreateMap<DistritoLocal, DistritoLocalDTO>()
+                  .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado));
+            CreateMap<DistritoLocalDTO, DistritoLocal>();
         }
     }
 }

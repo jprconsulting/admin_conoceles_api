@@ -24,17 +24,17 @@ namespace conoceles_api.Services
         public async Task<AppUserAuthDTO> ValidateUser(AppUserDTO dto)
         {
             var user = await (from u in context.Usuarios
-                                join r in context.Rols
-                                on u.Rol.Id equals r.Id
-                                where u.Correo == dto.Email && u.Password == dto.Password
-                                select new AppUserAuthDTO
-                                {
-                                    UsuarioId = u.Id,
-                                    NombreCompleto = $"{u.Nombres} {u.ApellidoPaterno} {u.ApellidoMaterno}",
-                                    Email = u.Correo,
-                                    RolId = r.Id,
-                                    Rol = r.NombreRol
-                                }).FirstOrDefaultAsync();
+                              join r in context.Rols
+                              on u.Rol.Id equals r.Id
+                              where u.Correo == dto.Email && u.Password == dto.Password
+                              select new AppUserAuthDTO
+                              {
+                                  UsuarioId = u.Id,
+                                  NombreCompleto = $"{u.Nombres} {u.ApellidoPaterno} {u.ApellidoMaterno}",
+                                  Email = u.Correo,
+                                  RolId = r.Id,
+                                  Rol = r.NombreRol
+                              }).FirstOrDefaultAsync();
 
             if (user != null)
             {
@@ -56,7 +56,14 @@ namespace conoceles_api.Services
         public string GenerateJwtToken(int usuarioId)
         {
             var key = configuration.GetValue<string>("JwtSettings:key");
-            var keyBytes = Encoding.ASCII.GetBytes(key); 
+
+            // Asegúrate de que la longitud de la clave sea al menos 256 bits (32 bytes)
+            if (Encoding.ASCII.GetBytes(key).Length < 32)
+            {
+                throw new InvalidOperationException("La longitud de la clave es menor de lo esperado.");
+            }
+
+            var keyBytes = Encoding.ASCII.GetBytes(key);
 
             // Describe las propiedades del usuario
             var claims = new ClaimsIdentity();
