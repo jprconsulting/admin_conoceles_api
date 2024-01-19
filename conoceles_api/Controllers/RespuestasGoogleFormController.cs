@@ -58,7 +58,6 @@ namespace conoceles_api.Controllers
                 SheetsService sheetsService = new SheetsService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,
-                    ApplicationName = "Test-conoceles"
                 });
 
                 // ID de la hoja de cálculo vinculada al formulario de Google
@@ -88,13 +87,13 @@ namespace conoceles_api.Controllers
                         // !string.IsNullOrWhiteSpace(nombrePregunta)
                         if (existePregunta == null)
                         {
-                            var preguntaDTO = new PreguntaFormularioDTO()
-                            {
+                            var preguntaDTO = new PreguntaFormularioDTO() 
+                            { 
                                 Pregunta = nombrePregunta,
-                                Formulario = new FormularioDTO() { Id = formulario.Id }
                             };
 
                             var preguntaFormulario = mapper.Map<PreguntaFormulario>(preguntaDTO);
+                            preguntaFormulario.Formulario = formulario;
                             context.PreguntasFormulario.Add(preguntaFormulario);
                             await context.SaveChangesAsync();
                             preguntasIndex.Add(new PreguntaIndexDTO { PreguntaDBId = preguntaFormulario.Id, Index = i });
@@ -128,6 +127,9 @@ namespace conoceles_api.Controllers
                                     string respuestaCandidato = respuestas[i]?.ToString() ?? "";
                                     int preguntaCuestionarioIdDB = preguntasIndex.FirstOrDefault(p => p.Index == i)?.PreguntaDBId ?? 0;
 
+                                    var preguntaCuestionario = await context.PreguntasFormulario
+                                        .FirstOrDefaultAsync(p => p.Id == preguntaCuestionarioIdDB);
+
                                     var existeRespuesta = await context.RespuestasPreguntaFormulario
                                         .FirstOrDefaultAsync(r => r.PreguntaFormulario.Id == preguntaCuestionarioIdDB
                                             && r.AsignacionFormulario.Id == existeAsignacion.Id);
@@ -143,12 +145,11 @@ namespace conoceles_api.Controllers
                                         var respuestaPreguntaDTO = new RespuestaPreguntaFormularioDTO() 
                                         { 
                                             Respuesta = respuestaCandidato,
-                                            PreguntaFormulario = new PreguntaFormularioDTO() { Id = preguntaCuestionarioIdDB },
-                                            AsignacionFormulario = new AsignacionFormularioDTO() {Id = existeAsignacion.Id},
-
                                         };
 
                                         var respuestaPreguntaFormulario = mapper.Map<RespuestaPreguntaFormulario>(respuestaPreguntaDTO);
+                                        respuestaPreguntaFormulario.AsignacionFormulario = existeAsignacion;
+                                        respuestaPreguntaFormulario.PreguntaFormulario = preguntaCuestionario;
                                         context.RespuestasPreguntaFormulario.Add(respuestaPreguntaFormulario);
                                     }
 
