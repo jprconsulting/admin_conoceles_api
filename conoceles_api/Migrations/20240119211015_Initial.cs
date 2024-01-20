@@ -561,8 +561,7 @@ namespace conocelesapi.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_RolId",
                 table: "Usuarios",
-                column: "RolId",
-                unique: true);
+                column: "RolId");
         }
 
         /// <inheritdoc />

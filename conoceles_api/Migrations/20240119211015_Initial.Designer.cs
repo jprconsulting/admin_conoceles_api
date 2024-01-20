@@ -11,7 +11,7 @@ using conoceles_api;
 namespace conocelesapi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240118174407_Initial")]
+    [Migration("20240119211015_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -500,8 +500,7 @@ namespace conocelesapi.Migrations
                     b.HasIndex("CandidatoId")
                         .IsUnique();
 
-                    b.HasIndex("RolId")
-                        .IsUnique();
+                    b.HasIndex("RolId");
 
                     b.ToTable("Usuarios");
                 });
@@ -637,8 +636,8 @@ namespace conocelesapi.Migrations
                         .HasForeignKey("conoceles_api.Entities.Usuario", "CandidatoId");
 
                     b.HasOne("conoceles_api.Entities.Rol", "Rol")
-                        .WithOne("Usuario")
-                        .HasForeignKey("conoceles_api.Entities.Usuario", "RolId")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("RolId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -707,7 +706,7 @@ namespace conocelesapi.Migrations
                 {
                     b.Navigation("Claims");
 
-                    b.Navigation("Usuario");
+                    b.Navigation("Usuarios");
                 });
 
             modelBuilder.Entity("conoceles_api.Entities.TipoAgrupacionPolitica", b =>
