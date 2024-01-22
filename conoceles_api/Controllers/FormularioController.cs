@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace conoceles_api.Controllers
 {
-    [Route("api/google-form")]
+    [Route("api/formulario")]
     [ApiController]
-    public class GoogleFormsController : ControllerBase
+    public class FormularioController : ControllerBase
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
 
-        public GoogleFormsController(ApplicationDbContext context, IMapper mapper)
+        public FormularioController(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
@@ -41,6 +41,19 @@ namespace conoceles_api.Controllers
             var formularios = await context.Formularios
                 .Include(c => c.ConfigGoogleForm)
                 .ToListAsync();
+
+            if (!formularios.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(mapper.Map<List<FormularioDTO>>(formularios));
+        }
+
+        [HttpGet("obtener-formularios-sin-configuracion")]
+        public async Task<ActionResult<List<FormularioDTO>>> GetFormulariosSinConfiguracion()
+        {
+            var formularios = await context.Formularios.ToListAsync();
 
             if (!formularios.Any())
             {

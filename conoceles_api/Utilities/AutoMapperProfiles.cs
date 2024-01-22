@@ -14,7 +14,7 @@ namespace conoceles_api.Utilities
 
             CreateMap<Usuario, UsuarioDTO>()
                 .ForMember(dest => dest.Rol, opt => opt.MapFrom(src => src.Rol))
-                .ForMember(dest => dest.Nombres, opt => opt.MapFrom(src => $"{src.Nombres} {src.ApellidoPaterno} {src.ApellidoMaterno}"));      
+                .ForMember(dest => dest.NombreCompleto, opt => opt.MapFrom(src => $"{src.Nombres} {src.ApellidoPaterno} {src.ApellidoMaterno}"));      
             CreateMap<UsuarioDTO, Usuario>();
 
 
@@ -32,22 +32,21 @@ namespace conoceles_api.Utilities
 
             CreateMap<AgrupacionPolitica, AgrupacionPoliticaDTO>();
             CreateMap<AgrupacionPoliticaDTO, AgrupacionPolitica>();
-
-            CreateMap<Municipio, MunicipioDTO>();
+      
+            CreateMap<Municipio, MunicipioDTO>()
+                .ForMember(dest => dest.DistritoLocal, opt => opt.MapFrom(src => src.DistritoLocal));
             CreateMap<MunicipioDTO, Municipio>();
 
-            CreateMap<Ayuntamiento, AyuntamientoDTO>()
-                   .ForMember(dest => dest.DistritoLocal, opt => opt.MapFrom(src => src.DistritoLocal));
-            CreateMap<AyuntamientoDTO, Ayuntamiento>();
-
             CreateMap<Comunidad, ComunidadDTO>()
-       .ForMember(dest => dest.Ayuntamiento, opt => opt.MapFrom(src => src.Ayuntamiento));
+                .ForMember(dest => dest.Municipio, opt => opt.MapFrom(src => src.Municipio));
             CreateMap<ComunidadDTO, Comunidad>();
 
-            CreateMap<Candidato, CandidatoDTO>();
+            CreateMap<Candidato, CandidatoDTO>()
+                .ForMember(dest => dest.NombreCompleto, opt => opt.MapFrom(src => $"{src.Nombres} {src.ApellidoPaterno} {src.ApellidoMaterno}"));
             CreateMap<CandidatoDTO, Candidato>();
 
-            CreateMap<AsignacionFormulario, AsignacionFormularioDTO>();
+            CreateMap<AsignacionFormulario, AsignacionFormularioDTO>()
+                .ForMember(dest => dest.StrFechaHoraAsignacion, opt => opt.MapFrom(src => $"{src.FechaHoraAsignacion:dd/MM/yyyy HH:mm}"));
             CreateMap<AsignacionFormularioDTO, AsignacionFormulario>();
 
             CreateMap<ConfigGoogleForm, ConfigGoogleFormDTO>();

@@ -4,6 +4,7 @@
     {
         public int? Id { get; set; }
         public string Nombres { get; set; }
+        public string NombreCompleto { get; set; }
         public string ApellidoPaterno { get; set; }
         public string ApellidoMaterno { get; set; }
         public string Sobrenombre { get; set; }
@@ -19,7 +20,7 @@
         public string Tiktok { get; set; }
         public string Foto { get; set; }
         public bool Estatus { get; set; }
-        public AgrupacionPoliticaDTO OrganizacionPolitica { get; set; }
+        public AgrupacionPoliticaDTO AgrupacionPolitica { get; set; }
         public CargoDTO Cargo { get; set; }
         public EstadoDTO Estado { get; set; }
         public GeneroDTO Genero { get; set; }

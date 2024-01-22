@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
+
 
 namespace conoceles_api.Controllers
 {
@@ -61,10 +63,10 @@ namespace conoceles_api.Controllers
                 });
 
                 // ID de la hoja de cálculo vinculada al formulario de Google
-                string spreadsheetId = formulario.ConfigGoogleForm.SpreadsheetId;
+                string spreadsheetId = formulario.SpreadsheetId;
 
                 // Rango de datos que deseas obtener (por ejemplo, "Sheet1!A:F" para todas las columnas de la hoja "Sheet1")
-                string range = $"{formulario.ConfigGoogleForm.SheetName}!A1:F";
+                string range = $"{formulario.SheetName}!A1:F";
 
                 // Realiza la solicitud para obtener los datos
                 SpreadsheetsResource.ValuesResource.GetRequest request = sheetsService.Spreadsheets.Values.Get(spreadsheetId, range);
@@ -167,6 +169,53 @@ namespace conoceles_api.Controllers
 
             return Ok();
         }
+
+        [HttpGet("respuestas-preguntas-google-form-por-candidato-id/{candidatoId}")]
+        public async Task<CandidatoPreguntasRespuestasGoogleFormDTO> RespuestasPreguntasGoogleFormPorCandidatoId(int candidatoId)
+        {
+            CandidatoPreguntasRespuestasGoogleFormDTO formulariosCandidato = new CandidatoPreguntasRespuestasGoogleFormDTO();
+            var infoCandidato = await context.Candidatos.FirstOrDefaultAsync(c => c.Id == candidatoId);
+
+            if (infoCandidato != null)
+            {
+                formulariosCandidato.CandidatoId = candidatoId;
+                formulariosCandidato.NombreCompleto = $"{infoCandidato.Nombres} {infoCandidato.ApellidoPaterno} {infoCandidato.ApellidoMaterno}";
+                formulariosCandidato.Formularios = new List<FormularioPreguntasRespuestasGoogleFormDTO>();
+                var formulariosIds = await context.Formularios.Include(f => f.ConfigGoogleForm).ToListAsync();
+
+                foreach (var form in formulariosIds)
+                {
+                    var preguntasRespuestas = await (from p in context.PreguntasFormulario
+                                                     join r in context.RespuestasPreguntaFormulario
+                                                     on p.Id equals r.PreguntaFormulario.Id
+                                                     join a in context.AsignacionesFormulario
+                                                     on r.AsignacionFormulario.Id equals a.Id
+                                                     where a.Formulario.Id == form.Id && a.Candidato.Id == candidatoId
+                                                     select new PreguntaRespuestaGoogleFormDTO
+                                                     {
+                                                         PreguntaFormularioId = p.Id,
+                                                         Pregunta = p.Pregunta,
+                                                         RespuestaPreguntaFormularioId = r.Id,
+                                                         Respuesta = r.Respuesta
+                                                     }).ToListAsync();
+
+                    var formularioPreguntasRespuestas = new FormularioPreguntasRespuestasGoogleFormDTO
+                    {
+                        FormularioId = form.Id,
+                        NombreFormulario = form.NombreFormulario,
+                        GoogleFormId = form.GoogleFormId,
+                        PreguntasRespuestas = preguntasRespuestas
+                    };
+
+                    formulariosCandidato.Formularios.Add(formularioPreguntasRespuestas);
+
+
+                }
+            }
+
+            return formulariosCandidato;
+        }
+
 
 
 

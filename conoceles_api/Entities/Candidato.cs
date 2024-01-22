@@ -19,7 +19,8 @@
         public string Tiktok { get; set; }
         public string Foto { get; set; }
         public bool Estatus { get; set; }
-        public AgrupacionPolitica OrganizacionPolitica { get; set; }
+        public bool EstadoOperativo { get; set; }
+        public AgrupacionPolitica AgrupacionPolitica { get; set; }
         public Cargo Cargo { get; set; }
         public Estado Estado { get; set; }
         public Genero Genero { get; set; }

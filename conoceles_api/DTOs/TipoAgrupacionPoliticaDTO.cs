@@ -3,6 +3,6 @@
     public class TipoAgrupacionPoliticaDTO
     {
         public int? Id { get; set; }
-        public string TipoOrganizacion { get; set; }
+        public string TipoAgrupacion { get; set; }
     }
 }

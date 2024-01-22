@@ -4,6 +4,7 @@ using conoceles_api.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace conoceles_api.Controllers
 {
@@ -62,6 +63,9 @@ namespace conoceles_api.Controllers
                 return BadRequest(ModelState);
             }
 
+            var formulario = await context.Formularios.SingleOrDefaultAsync(g => g.Id == dto.Formulario.Id);
+            var fechaActual = DateTime.Now;
+
             foreach (var candidatoId in dto.CandidatosIds)
             {
                 var existeAsignacion = await context.AsignacionesFormulario.AnyAsync(a => a.Candidato.Id == candidatoId 
@@ -70,8 +74,9 @@ namespace conoceles_api.Controllers
                 if (!existeAsignacion) 
                 {
                     var asignacion = mapper.Map<AsignacionFormulario>(dto);
-                    asignacion.Formulario = await context.Formularios.SingleOrDefaultAsync(g => g.Id == dto.Formulario.Id);
+                    asignacion.Formulario = formulario;
                     asignacion.Candidato = await context.Candidatos.SingleOrDefaultAsync(c => c.Id == candidatoId);
+                    asignacion.FechaHoraAsignacion = fechaActual;
                     context.Add(asignacion);
                 }
             }       
@@ -102,6 +107,62 @@ namespace conoceles_api.Controllers
 
             return NoContent();
         }
-       
+
+        [HttpGet("get-edit-links-and-emails-by-form-id")]
+        public async Task<ActionResult> GetEditLinksAndEmailsByFormId(int formId)
+        {           
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var existsForm = await context.Formularios
+                    .Include(c => c.ConfigGoogleForm)
+                    .SingleOrDefaultAsync(f => f.Id == formId);
+
+                    if (existsForm != null)
+                    {
+                        HttpResponseMessage response = await client.GetAsync(existsForm.EndPointEditLinks);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string jsonResponse = await response.Content.ReadAsStringAsync();
+                            ApiResponseListEditLinksDTO apiResponse = JsonConvert.DeserializeObject<ApiResponseListEditLinksDTO>(jsonResponse);
+
+                            foreach (var item in apiResponse.EditLinksAndEmails)
+                            {
+                                var existsAsignacion = await context.AsignacionesFormulario
+                                    .Include(c => c.Candidato)                             
+                                    .SingleOrDefaultAsync(a => a.Candidato.Email == item.UserEmail 
+                                        && a.Formulario.Id == existsForm.Id
+                                        && string.IsNullOrEmpty(a.EditLink));
+
+                                if (existsAsignacion != null)
+                                {
+                                    existsAsignacion.EditLink = item.EditLink; 
+                                }
+                            }
+                            await context.SaveChangesAsync();
+                            return Ok();
+                        }
+                        else
+                        {
+                            return BadRequest();
+                        }
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500);
+                }
+            }
+            
+
+            
+        }
+
     }
 }

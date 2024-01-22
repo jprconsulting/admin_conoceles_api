@@ -23,12 +23,31 @@ namespace conoceles_api.Controllers
         {
             this.context = context;
             this.mapper = mapper;
-        }       
+        }        
+
+        [HttpGet("obtener-por-id/{id:int}")]
+        public async Task<ActionResult<MunicipioDTO>> GetById(int id)
+        {
+            var municipio = await context.Municipios
+                .Include(e => e.DistritoLocal)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (municipio == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(mapper.Map<MunicipioDTO>(municipio));
+        }
+
 
         [HttpGet("obtener-todos")]
         public async Task<ActionResult<List<MunicipioDTO>>> GetAll()
         {
-            var municipios = await context.Municipios.ToListAsync();
+            var municipios = await context.Municipios
+                .Include(e => e.DistritoLocal)
+                .OrderBy(u => u.Id)
+                .ToListAsync();
 
             if (!municipios.Any())
             {
@@ -36,7 +55,84 @@ namespace conoceles_api.Controllers
             }
 
             return Ok(mapper.Map<List<MunicipioDTO>>(municipios));
-        }      
+        }
+
+        [HttpPost("crear")]
+        public async Task<ActionResult> Post(MunicipioDTO dto)
+        {
+            // Validación del modelo
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Mapeo del DTO a la entidad
+            var municipio = mapper.Map<Municipio>(dto);
+            municipio.DistritoLocal = await context.DistritosLocales.SingleOrDefaultAsync(r => r.Id == dto.DistritoLocal.Id);
+
+            // Incluir la entidad en el contexto
+            context.Add(municipio);
+
+            try
+            {
+                // Guardar cambios en la base de datos dentro de una transacción
+                await context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                // Manejar errores de base de datos
+                return StatusCode(500);
+            }
+        }
+
+        [HttpDelete("eliminar/{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var municipio = await context.Municipios.FindAsync(id);
+
+            if (municipio == null)
+            {
+                return NotFound();
+            }
+
+            context.Municipios.Remove(municipio);
+            await context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPut("actualizar/{id:int}")]
+        public async Task<ActionResult> Put(int id, [FromBody] MunicipioDTO dto)
+        {
+            if (id != dto.Id)
+            {
+                return BadRequest("El ID de la ruta y el ID del objeto no coinciden");
+            }
+
+            var municipio = await context.Municipios.FindAsync(id);
+
+            if (municipio == null)
+            {
+                return NotFound();
+            }
+
+            // Mapea los datos del DTO al usuario existente
+            mapper.Map(dto, municipio);
+            municipio.DistritoLocal = await context.DistritosLocales.SingleOrDefaultAsync(r => r.Id == dto.DistritoLocal.Id);
+
+            context.Update(municipio);
+
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+            }
+
+            return NoContent();
+        }
 
     }
 }

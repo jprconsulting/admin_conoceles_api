@@ -2,10 +2,7 @@
 {
     public class ConfigGoogleFormDTO
     {
-        public int? Id { get; set; }
-        public string GoogleFormId { get; set; }
-        public string SpreadsheetId { get; set; }
-        public string SheetName { get; set; }
+        public int? Id { get; set; } 
         public string Type { get; set; }
         public string ProjectId { get; set; }
         public string PrivateKeyId { get; set; }

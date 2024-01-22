@@ -28,7 +28,7 @@ namespace beneficiarios_dif_api.Controllers
         public async Task<ActionResult<AgrupacionPoliticaDTO>> GetById(int id)
         {
             var visita = await context.AgrupacionesPoliticas
-                .Include(b => b.TipoOrganizacionPolitica)
+                .Include(b => b.TipoAgrupacionPolitica)
                 .FirstOrDefaultAsync(v => v.Id == id);
 
             if (visita == null)
@@ -59,7 +59,7 @@ namespace beneficiarios_dif_api.Controllers
             try
             {
                 var agrupaciones = await context.AgrupacionesPoliticas
-                .Include(b => b.TipoOrganizacionPolitica)
+                .Include(b => b.TipoAgrupacionPolitica)
                 .ToListAsync();
 
                 if (!agrupaciones.Any())
@@ -97,7 +97,7 @@ namespace beneficiarios_dif_api.Controllers
             }
 
             var agrupacion = mapper.Map<AgrupacionPolitica>(dto);
-            agrupacion.TipoOrganizacionPolitica = await context.TiposAgrupacionesPoliticas.SingleOrDefaultAsync(b => b.Id == dto.TipoOrganizacionPolitica.Id);
+            agrupacion.TipoAgrupacionPolitica = await context.TiposAgrupacionesPoliticas.SingleOrDefaultAsync(b => b.Id == dto.TipoAgrupacionPolitica.Id);
 
 
 
@@ -132,7 +132,7 @@ namespace beneficiarios_dif_api.Controllers
             }
 
             mapper.Map(dto, agrupacion);
-            agrupacion.TipoOrganizacionPolitica = await context.TiposAgrupacionesPoliticas.SingleOrDefaultAsync(b => b.Id == dto.TipoOrganizacionPolitica.Id);
+            agrupacion.TipoAgrupacionPolitica = await context.TiposAgrupacionesPoliticas.SingleOrDefaultAsync(b => b.Id == dto.TipoAgrupacionPolitica.Id);
 
             context.Update(agrupacion);
 

@@ -3,10 +3,7 @@
     public class Comunidad
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
-        public string Acronimo { get; set; }
-        public string Peticion { get; set; }
-        public bool Estatus { get; set; }
-        public Ayuntamiento Ayuntamiento { get; set; }
+        public string NombreComunidad { get; set; }
+        public Municipio Municipio { get; set; }
     }
 }

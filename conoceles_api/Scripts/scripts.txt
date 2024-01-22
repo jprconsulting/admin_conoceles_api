@@ -1,4 +1,87 @@
-INSERT INTO conoceles2.municipios (nombre)
+INSERT INTO conoceles2.rols (nombreRol)
+VALUES 
+('Candidato'),
+('Administrador');
+
+
+INSERT INTO conoceles2.claims (ClaimType, ClaimValue, RolId) VALUES
+('CanAccessInicio', 1, 2),
+('CanAccessCandidatos',1,2),
+('CanAccessAsignacionFormulario', 1,2),
+('CanAccessCargos', 1, 2),
+('CanAccessAgrupacionesPoliticas', 1, 2),
+('CanAccessFormularios', 1, 2),
+('CanAccessDemarcaciones', 1, 2),
+('CanAccessUsuarios', 1, 2);
+
+
+INSERT INTO conoceles2.tiposagrupacionespoliticas (TipoAgrupacion)
+VALUES 
+('Partido Político'),
+('Candidatura Común'),
+('Coalición'),
+('Candidatura Independiente');
+
+
+INSERT INTO conoceles2.agrupacionespoliticas (NombreAgrupacion, Logo, Estatus, TipoAgrupacionPoliticaId)
+VALUES 
+('Partido Acción Nacional', 'PAN204011014.png',1,1),
+('Movimiento Ciudadano','MC204447195.png',1,1),
+('Morena', 'MORENA204530270.png',1,1),
+('Partido Revolucionario Institucional', 'PRI25S.png',1,1);
+
+INSERT INTO conoceles2.generos (NombreGenero)
+VALUES 
+('Hombre'),
+('Mujer');
+
+INSERT INTO conoceles2.cargos (NombreCargo)
+VALUES 
+('Diputación'),
+('Senaduría Federal MR');
+
+
+INSERT INTO conoceles2.usuarios (Nombres, ApellidoPaterno, ApellidoMaterno, Correo, Password, Estatus, RolId) 
+VALUES 
+('Gabriel', 'Ruiz', 'Limon', 'admin@gmail.com', '123',   true, 2);
+
+INSERT INTO conoceles2.estados (NombreEstado)
+VALUES 
+('Aguascalientes'),
+('Baja California'),
+('Baja California Sur'),
+('Campeche'),
+('Chiapas'),
+('Chihuahua'),
+('Ciudad de México'),
+('Coahuila'),
+('Colima'),
+('Durango'),
+('Estado de México'),
+('Guanajuato'),
+('Guerrero'),
+('Hidalgo'),
+('Jalisco'),
+('Michoacán'),
+('Morelos'),
+('Nayarit'),
+('Nuevo León'),
+('Oaxaca'),
+('Puebla'),
+('Querétaro'),
+('Quintana Roo'),
+('San Luis Potosí'),
+('Sinaloa'),
+('Sonora'),
+('Tabasco'),
+('Tamaulipas'),
+('Tlaxcala'),
+('Veracruz'),
+('Yucatán'),
+('Zacatecas');
+
+
+INSERT INTO conoceles2.municipios (nombreMunicipio)
 VALUES 
 ('Amaxac de Guerrero'),
 ('Apetatitlán de Antonio Carvajal'),
@@ -60,87 +143,3 @@ VALUES
 ('Santa Catarina Ayometla'),
 ('Santa Cruz Quilehtla'),
 ('Santa Isabel Xiloxoxtla');
-
-INSERT INTO conoceles2.rols (nombreRol)
-VALUES 
-('Candidato'),
-('Administrador');
-
-
-INSERT INTO conoceles2.claims (ClaimType, ClaimValue, RolId) VALUES
-('CanAccessCandidatos',1,1),
-('CanAccessAsignacionFormulario', 1,1),
-('CanAccessCargos', 1, 1),
-('CanAccessInicio', 1, 1),
-('CanAccessAgrupacionesPoliticas', 1, 1),
-('CanAccessUsuarios', 1, 1);
-
-
-INSERT INTO conoceles2.tiposagrupacionespoliticas (TipoOrganizacion)
-VALUES 
-('Partido Político'),
-('Candidatura Común'),
-('Coalición'),
-('Candidatura Independiente');
-
-
-INSERT INTO conoceles2.organizacionespoliticas (NombreOrganizacion, Logo, Estatus, TipoOrganizacionPoliticaId)
-VALUES 
-('Partido Acción Nacional', 'PAN204011014.png',1,1),
-('Movimiento Ciudadano','MC204447195.png',1,1),
-('Morena', 'MORENA204530270.png',1,1),
-('Partido Revolucionario Institucional', 'PRI25S.png',1,1);
-
-INSERT INTO conoceles2.generos (NombreGenero)
-VALUES 
-('Hombre'),
-('Mujer');
-
-INSERT INTO conoceles2.cargos (NombreCargo)
-VALUES 
-('Diputación'),
-('Senaduría Federal MR');
-
-INSERT INTO conoceles2.estados (NombreEstado)
-VALUES 
-('Aguascalientes'),
-('Baja California'),
-('Baja California Sur'),
-('Campeche'),
-('Chiapas'),
-('Chihuahua'),
-('Ciudad de México'),
-('Coahuila'),
-('Colima'),
-('Durango'),
-('Estado de México'),
-('Guanajuato'),
-('Guerrero'),
-('Hidalgo'),
-('Jalisco'),
-('Michoacán'),
-('Morelos'),
-('Nayarit'),
-('Nuevo León'),
-('Oaxaca'),
-('Puebla'),
-('Querétaro'),
-('Quintana Roo'),
-('San Luis Potosí'),
-('Sinaloa'),
-('Sonora'),
-('Tabasco'),
-('Tamaulipas'),
-('Tlaxcala'),
-('Veracruz'),
-('Yucatán'),
-('Zacatecas');
-
-INSERT INTO conoceles2.rols (nombreRol)
-VALUES 
-('Administrador'),
-('Candidato');
-
-INSERT INTO conoceles2.usuarios (Nombres, ApellidoPaterno, ApellidoMaterno, Correo, Password, Estatus, RolId) 
-VALUES 
-('Gabriel', 'Ruiz', 'Limon', 'admin@gmail.com', '123',   true, 1);

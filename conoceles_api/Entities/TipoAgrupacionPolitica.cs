@@ -3,7 +3,7 @@
     public class TipoAgrupacionPolitica
     {
         public int Id { get; set; }
-        public string TipoOrganizacion { get; set; }
-        public List<AgrupacionPolitica> OrganizacionesPoliticas { get; set; }
+        public string TipoAgrupacion { get; set; }
+        public List<AgrupacionPolitica> AgrupacionesPoliticas { get; set; }
     }
 }

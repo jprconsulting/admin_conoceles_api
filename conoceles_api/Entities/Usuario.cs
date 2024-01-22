@@ -12,6 +12,7 @@ namespace conoceles_api.Entities
         public string Correo { get; set; }
         public string Password { get; set; }
         public bool Estatus { get; set; }
+        public bool EstadoOperativo { get; set; }
         [Required]
         public Rol Rol { get; set; } = null!;
         public int? CandidatoId { get; set; }

@@ -27,8 +27,8 @@ namespace conoceles_api.Controllers
                 .Include(g => g.Genero)
                 .Include(e => e.Estado)
                 .Include(c => c.Cargo)
-                .Include(o => o.OrganizacionPolitica)
-                    .ThenInclude(t => t.TipoOrganizacionPolitica)
+                .Include(o => o.AgrupacionPolitica)
+                    .ThenInclude(t => t.TipoAgrupacionPolitica)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (candidato == null)
@@ -46,8 +46,8 @@ namespace conoceles_api.Controllers
               .Include(g => g.Genero)
               .Include(e => e.Estado)
               .Include(c => c.Cargo)
-              .Include(o => o.OrganizacionPolitica)
-                  .ThenInclude(t => t.TipoOrganizacionPolitica)
+              .Include(o => o.AgrupacionPolitica)
+                  .ThenInclude(t => t.TipoAgrupacionPolitica)
               .ToListAsync();
 
             if (!candidatos.Any())
@@ -79,8 +79,8 @@ namespace conoceles_api.Controllers
             candidato.Genero = await context.Generos.SingleOrDefaultAsync(g => g.Id == dto.Genero.Id);
             candidato.Estado = await context.Estados.SingleOrDefaultAsync(e => e.Id == dto.Estado.Id);
             candidato.Cargo = await context.Cargos.SingleOrDefaultAsync(c => c.Id == dto.Cargo.Id);
-            candidato.OrganizacionPolitica = await context.AgrupacionesPoliticas
-                .SingleOrDefaultAsync(o => o.Id == dto.OrganizacionPolitica.Id);
+            candidato.AgrupacionPolitica = await context.AgrupacionesPoliticas
+                .SingleOrDefaultAsync(o => o.Id == dto.AgrupacionPolitica.Id);
 
             context.Add(candidato);
 
@@ -131,8 +131,8 @@ namespace conoceles_api.Controllers
             candidato.Genero = await context.Generos.SingleOrDefaultAsync(g => g.Id == dto.Genero.Id);
             candidato.Estado = await context.Estados.SingleOrDefaultAsync(e => e.Id == dto.Estado.Id);
             candidato.Cargo = await context.Cargos.SingleOrDefaultAsync(c => c.Id == dto.Cargo.Id);
-            candidato.OrganizacionPolitica = await context.AgrupacionesPoliticas
-                .SingleOrDefaultAsync(o => o.Id == dto.OrganizacionPolitica.Id);
+            candidato.AgrupacionPolitica = await context.AgrupacionesPoliticas
+                .SingleOrDefaultAsync(o => o.Id == dto.AgrupacionPolitica.Id);
 
             context.Update(candidato);
 

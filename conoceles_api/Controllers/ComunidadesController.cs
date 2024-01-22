@@ -24,7 +24,7 @@ namespace conoceles_api.Controllers
         public async Task<ActionResult<ComunidadDTO>> GetById(int id)
         {
             var comunidad = await context.Comunidades
-                .Include(e => e.Ayuntamiento)
+                .Include(e => e.Municipio)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             if (comunidad == null)
@@ -40,7 +40,7 @@ namespace conoceles_api.Controllers
         public async Task<ActionResult<List<ComunidadDTO>>> GetAll()
         {
             var comunidad = await context.Comunidades
-                .Include(e => e.Ayuntamiento)
+                .Include(e => e.Municipio)
                 .OrderBy(u => u.Id)
                 .ToListAsync();
 
@@ -63,7 +63,7 @@ namespace conoceles_api.Controllers
 
             // Mapeo del DTO a la entidad
             var comunidad = mapper.Map<Comunidad>(dto);
-            comunidad.Ayuntamiento = await context.Ayuntamientos.SingleOrDefaultAsync(r => r.Id == dto.Ayuntamiento.Id);
+            comunidad.Municipio = await context.Municipios.SingleOrDefaultAsync(r => r.Id == dto.Municipio.Id);
 
             // Incluir la entidad en el contexto
             context.Add(comunidad);
@@ -78,7 +78,6 @@ namespace conoceles_api.Controllers
             catch (Exception ex)
             {
                 // Manejar errores de base de datos
-                // return StatusCode(500, new { error = "Error interno del servidor.", details = ex.Message });
                 return StatusCode(500);
             }
         }
@@ -116,7 +115,7 @@ namespace conoceles_api.Controllers
 
             // Mapea los datos del DTO al usuario existente
             mapper.Map(dto, comunidad);
-            comunidad.Ayuntamiento = await context.Ayuntamientos.SingleOrDefaultAsync(r => r.Id == dto.Ayuntamiento.Id);
+            comunidad.Municipio = await context.Municipios.SingleOrDefaultAsync(r => r.Id == dto.Municipio.Id);
 
             context.Update(comunidad);
 
