@@ -1,4 +1,6 @@
-﻿namespace conoceles_api.Entities
+﻿using conoceles_api.DTOs;
+
+namespace conoceles_api.Entities
 {
     public class Candidato
     {
@@ -24,6 +26,9 @@
         public Cargo Cargo { get; set; }
         public Estado Estado { get; set; }
         public Genero Genero { get; set; }
+        public DistritoLocal? DistritoLocal { get; set; }
+        public Municipio? Municipio { get; set; }
+        public Comunidad? Comunidad { get; set; }
         public List<AsignacionFormulario> AsignacionesFormulario { get; set; }
         public Usuario? Usuario { get; set; }
 

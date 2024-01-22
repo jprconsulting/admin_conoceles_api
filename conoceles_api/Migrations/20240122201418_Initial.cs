@@ -271,6 +271,27 @@ namespace conocelesapi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Comunidades",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    NombreComunidad = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    MunicipioId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comunidades", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comunidades_Municipios_MunicipioId",
+                        column: x => x.MunicipioId,
+                        principalTable: "Municipios",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Candidatos",
                 columns: table => new
                 {
@@ -310,7 +331,10 @@ namespace conocelesapi.Migrations
                     AgrupacionPoliticaId = table.Column<int>(type: "int", nullable: true),
                     CargoId = table.Column<int>(type: "int", nullable: true),
                     EstadoId = table.Column<int>(type: "int", nullable: true),
-                    GeneroId = table.Column<int>(type: "int", nullable: true)
+                    GeneroId = table.Column<int>(type: "int", nullable: true),
+                    DistritoLocalId = table.Column<int>(type: "int", nullable: true),
+                    MunicipioId = table.Column<int>(type: "int", nullable: true),
+                    ComunidadId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -326,6 +350,16 @@ namespace conocelesapi.Migrations
                         principalTable: "Cargos",
                         principalColumn: "Id");
                     table.ForeignKey(
+                        name: "FK_Candidatos_Comunidades_ComunidadId",
+                        column: x => x.ComunidadId,
+                        principalTable: "Comunidades",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Candidatos_DistritosLocales_DistritoLocalId",
+                        column: x => x.DistritoLocalId,
+                        principalTable: "DistritosLocales",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Candidatos_Estados_EstadoId",
                         column: x => x.EstadoId,
                         principalTable: "Estados",
@@ -335,24 +369,8 @@ namespace conocelesapi.Migrations
                         column: x => x.GeneroId,
                         principalTable: "Generos",
                         principalColumn: "Id");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Comunidades",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    NombreComunidad = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    MunicipioId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Comunidades", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comunidades_Municipios_MunicipioId",
+                        name: "FK_Candidatos_Municipios_MunicipioId",
                         column: x => x.MunicipioId,
                         principalTable: "Municipios",
                         principalColumn: "Id");
@@ -481,6 +499,16 @@ namespace conocelesapi.Migrations
                 column: "CargoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Candidatos_ComunidadId",
+                table: "Candidatos",
+                column: "ComunidadId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Candidatos_DistritoLocalId",
+                table: "Candidatos",
+                column: "DistritoLocalId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Candidatos_EstadoId",
                 table: "Candidatos",
                 column: "EstadoId");
@@ -489,6 +517,11 @@ namespace conocelesapi.Migrations
                 name: "IX_Candidatos_GeneroId",
                 table: "Candidatos",
                 column: "GeneroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Candidatos_MunicipioId",
+                table: "Candidatos",
+                column: "MunicipioId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Claims_RolId",
@@ -550,16 +583,10 @@ namespace conocelesapi.Migrations
                 name: "Claims");
 
             migrationBuilder.DropTable(
-                name: "Comunidades");
-
-            migrationBuilder.DropTable(
                 name: "RespuestasPreguntaFormulario");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
-
-            migrationBuilder.DropTable(
-                name: "Municipios");
 
             migrationBuilder.DropTable(
                 name: "AsignacionesFormulario");
@@ -569,9 +596,6 @@ namespace conocelesapi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Rols");
-
-            migrationBuilder.DropTable(
-                name: "DistritosLocales");
 
             migrationBuilder.DropTable(
                 name: "Candidatos");
@@ -586,7 +610,7 @@ namespace conocelesapi.Migrations
                 name: "Cargos");
 
             migrationBuilder.DropTable(
-                name: "Estados");
+                name: "Comunidades");
 
             migrationBuilder.DropTable(
                 name: "Generos");
@@ -596,6 +620,15 @@ namespace conocelesapi.Migrations
 
             migrationBuilder.DropTable(
                 name: "TiposAgrupacionesPoliticas");
+
+            migrationBuilder.DropTable(
+                name: "Municipios");
+
+            migrationBuilder.DropTable(
+                name: "DistritosLocales");
+
+            migrationBuilder.DropTable(
+                name: "Estados");
         }
     }
 }
