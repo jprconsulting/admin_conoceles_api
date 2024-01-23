@@ -125,7 +125,7 @@ namespace beneficiarios_dif_api.Controllers
             if (!string.IsNullOrEmpty(dto.ImagenBase64))
             {
                 byte[] bytes = Convert.FromBase64String(dto.ImagenBase64);
-                string fileName = Guid.NewGuid().ToString() + ".jpg";
+                string fileName = Guid.NewGuid().ToString() + ".jpg"; 
                 string filePath = Path.Combine(webHostEnvironment.WebRootPath, "images", fileName);
                 await System.IO.File.WriteAllBytesAsync(filePath, bytes);
                 dto.Logo = fileName;

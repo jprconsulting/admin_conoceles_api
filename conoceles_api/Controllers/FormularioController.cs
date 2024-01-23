@@ -104,7 +104,47 @@ namespace conoceles_api.Controllers
                 return StatusCode(500, new { error = "Error interno del servidor.", details = ex.Message });
             }
         }
+        [HttpPut("actualizar/{id:int}")]
+        public async Task<ActionResult> Put(int id, FormularioDTO dto)
+        {
+            if (id != dto.Id)
+            {
+                return BadRequest("El ID de la ruta y el ID del objeto no coinciden");
+            }
 
+            var formulario = await context.Formularios.FindAsync(id);
+
+            if (formulario == null)
+            {
+                return NotFound();
+            }
+
+            mapper.Map(dto, formulario);
+            
+            context.Update(formulario);
+
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!FormularioExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+        private bool FormularioExists(int id)
+        {
+            return context.Formularios.Any(c => c.Id == id);
+        }
 
         [HttpDelete("eliminar/{id:int}")]
         public async Task<ActionResult> Delete(int id)
