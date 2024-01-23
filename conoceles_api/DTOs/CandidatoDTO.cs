@@ -19,10 +19,14 @@
         public string Instagram { get; set; }
         public string Tiktok { get; set; }
         public string Foto { get; set; }
+        public string ImagenBase64 { get; set; }
         public bool Estatus { get; set; }
         public AgrupacionPoliticaDTO AgrupacionPolitica { get; set; }
         public CargoDTO Cargo { get; set; }
         public EstadoDTO Estado { get; set; }
         public GeneroDTO Genero { get; set; }
+        public DistritoLocalDTO? DistritoLocal { get; set; }
+        public MunicipioDTO? Municipio { get; set; }
+        public ComunidadDTO? Comunidad { get; set; }
     }
 }

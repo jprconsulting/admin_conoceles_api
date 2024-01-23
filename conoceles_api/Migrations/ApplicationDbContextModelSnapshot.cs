@@ -101,8 +101,14 @@ namespace conocelesapi.Migrations
                     b.Property<int?>("CargoId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ComunidadId")
+                        .HasColumnType("int");
+
                     b.Property<string>("DireccionCasaCampania")
                         .HasColumnType("longtext");
+
+                    b.Property<int?>("DistritoLocalId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
@@ -131,6 +137,9 @@ namespace conocelesapi.Migrations
                     b.Property<string>("Instagram")
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("MunicipioId")
+                        .HasColumnType("int");
+
                     b.Property<string>("NombreSuplente")
                         .HasColumnType("longtext");
 
@@ -158,9 +167,15 @@ namespace conocelesapi.Migrations
 
                     b.HasIndex("CargoId");
 
+                    b.HasIndex("ComunidadId");
+
+                    b.HasIndex("DistritoLocalId");
+
                     b.HasIndex("EstadoId");
 
                     b.HasIndex("GeneroId");
+
+                    b.HasIndex("MunicipioId");
 
                     b.ToTable("Candidatos");
                 });
@@ -518,6 +533,14 @@ namespace conocelesapi.Migrations
                         .WithMany("Candidatos")
                         .HasForeignKey("CargoId");
 
+                    b.HasOne("conoceles_api.Entities.Comunidad", "Comunidad")
+                        .WithMany()
+                        .HasForeignKey("ComunidadId");
+
+                    b.HasOne("conoceles_api.Entities.DistritoLocal", "DistritoLocal")
+                        .WithMany()
+                        .HasForeignKey("DistritoLocalId");
+
                     b.HasOne("conoceles_api.Entities.Estado", "Estado")
                         .WithMany("Candidatos")
                         .HasForeignKey("EstadoId");
@@ -526,13 +549,23 @@ namespace conocelesapi.Migrations
                         .WithMany("Candidatos")
                         .HasForeignKey("GeneroId");
 
+                    b.HasOne("conoceles_api.Entities.Municipio", "Municipio")
+                        .WithMany()
+                        .HasForeignKey("MunicipioId");
+
                     b.Navigation("AgrupacionPolitica");
 
                     b.Navigation("Cargo");
 
+                    b.Navigation("Comunidad");
+
+                    b.Navigation("DistritoLocal");
+
                     b.Navigation("Estado");
 
                     b.Navigation("Genero");
+
+                    b.Navigation("Municipio");
                 });
 
             modelBuilder.Entity("conoceles_api.Entities.Claim", b =>
