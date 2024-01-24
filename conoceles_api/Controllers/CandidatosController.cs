@@ -69,9 +69,7 @@ namespace conoceles_api.Controllers
                 .Include(e => e.Estado)
                 .Include(d => d.DistritoLocal)
                 .Include(m => m.Municipio)
-                .Include(c => c.Comunidad)
-                .Include(g => g.Genero)
-
+                .Include(p => p.Comunidad)
                 .Include(c => c.Cargo)
                 .Include(o => o.AgrupacionPolitica)
                     .ThenInclude(t => t.TipoAgrupacionPolitica)
@@ -110,21 +108,21 @@ namespace conoceles_api.Controllers
             }
 
             var candidato = mapper.Map<Candidato>(dto);
-            candidato.Genero = await context.Generos.SingleOrDefaultAsync(b => b.Id == dto.Genero.Id);
-            candidato.AgrupacionPolitica = await context.AgrupacionesPoliticas.SingleOrDefaultAsync(o => o.Id == dto.AgrupacionPolitica.Id);
-            candidato.Cargo = await context.Cargos.SingleOrDefaultAsync(b => b.Id == dto.Cargo.Id);
-            candidato.Estado = await context.Estados.SingleOrDefaultAsync(o => o.Id == dto.Estado.Id);
+            candidato.Genero = await context.Generos.SingleOrDefaultAsync(g => g.Id == dto.Genero.Id);
+            candidato.AgrupacionPolitica = await context.AgrupacionesPoliticas.SingleOrDefaultAsync(a => a.Id == dto.AgrupacionPolitica.Id);
+            candidato.Cargo = await context.Cargos.SingleOrDefaultAsync(c => c.Id == dto.Cargo.Id);
+            candidato.Estado = await context.Estados.SingleOrDefaultAsync(e => e.Id == dto.Estado.Id);
             if (dto.DistritoLocal != null)
             {
-                candidato.DistritoLocal = await context.DistritosLocales.SingleOrDefaultAsync(c => c.Id == dto.DistritoLocal.Id);
+                candidato.DistritoLocal = await context.DistritosLocales.SingleOrDefaultAsync(d => d.Id == dto.DistritoLocal.Id);
             }
             if (dto.Municipio != null)
             {
-                candidato.Municipio = await context.Municipios.SingleOrDefaultAsync(c => c.Id == dto.Municipio.Id);
+                candidato.Municipio = await context.Municipios.SingleOrDefaultAsync(m => m.Id == dto.Municipio.Id);
             }
             if (dto.Comunidad != null)
             {
-                candidato.Comunidad = await context.Comunidades.SingleOrDefaultAsync(c => c.Id == dto.Comunidad.Id);
+                candidato.Comunidad = await context.Comunidades.SingleOrDefaultAsync(p => p.Id == dto.Comunidad.Id);
             }
 
             context.Candidatos.Add(candidato);
@@ -157,19 +155,44 @@ namespace conoceles_api.Controllers
                 return BadRequest("El ID de la ruta y el ID del objeto no coinciden");
             }
 
-            var candidato = await context.Candidatos.FindAsync(id);
+            var candidato = await context.Candidatos
+                .Include(c => c.Genero)
+                .Include(c => c.Estado)
+                .Include(c => c.Cargo)
+                .Include(c => c.AgrupacionPolitica)
+                .Include(c => c.DistritoLocal)
+                .Include(c => c.Municipio)
+                .Include(c => c.Comunidad)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (candidato == null)
             {
                 return NotFound();
             }
 
+            // Actualizar propiedades del candidato desde el DTO
             mapper.Map(dto, candidato);
+
+            // Actualizar propiedades de navegación
             candidato.Genero = await context.Generos.SingleOrDefaultAsync(g => g.Id == dto.Genero.Id);
             candidato.Estado = await context.Estados.SingleOrDefaultAsync(e => e.Id == dto.Estado.Id);
             candidato.Cargo = await context.Cargos.SingleOrDefaultAsync(c => c.Id == dto.Cargo.Id);
-            candidato.AgrupacionPolitica = await context.AgrupacionesPoliticas
-                .SingleOrDefaultAsync(o => o.Id == dto.AgrupacionPolitica.Id);
+            candidato.AgrupacionPolitica = await context.AgrupacionesPoliticas.SingleOrDefaultAsync(a => a.Id == dto.AgrupacionPolitica.Id);
+
+            // Actualizar propiedades opcionales
+            candidato.DistritoLocal = await context.DistritosLocales.SingleOrDefaultAsync(d => d.Id == dto.DistritoLocal.Id);
+            candidato.Municipio = await context.Municipios.SingleOrDefaultAsync(m => m.Id == dto.Municipio.Id);
+            candidato.Comunidad = await context.Comunidades.SingleOrDefaultAsync(p => p.Id == dto.Comunidad.Id);
+
+            // Actualizar imagen si se proporciona en el DTO
+            if (!string.IsNullOrEmpty(dto.ImagenBase64))
+            {
+                byte[] bytes = Convert.FromBase64String(dto.ImagenBase64);
+                string fileName = Guid.NewGuid().ToString() + ".jpg";
+                string filePath = Path.Combine(webHostEnvironment.WebRootPath, "images", fileName);
+                await System.IO.File.WriteAllBytesAsync(filePath, bytes);
+                candidato.Foto = fileName;
+            }
 
             context.Update(candidato);
 
@@ -191,6 +214,7 @@ namespace conoceles_api.Controllers
 
             return NoContent();
         }
+
 
         private bool CandidatoExists(int id)
         {
