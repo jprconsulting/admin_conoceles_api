@@ -21,6 +21,31 @@ namespace conoceles_api.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet("obtener-por-candidato/{candidatoId:int}")]
+        public async Task<ActionResult<List<AsignacionFormularioDTO>>> GetByCandidatoId(int candidatoId)
+        {
+            try
+            {
+                var asignacionesFormulario = await context.AsignacionesFormulario
+                    .Include(g => g.Formulario)
+                    .Include(c => c.Candidato)
+                    .Where(a => a.Candidato.Id == candidatoId)
+                    .OrderBy(u => u.Id)
+                    .ToListAsync();
+
+                if (!asignacionesFormulario.Any())
+                {
+                    return NotFound("No se encontraron asignaciones de formularios para el candidato con ID " + candidatoId);
+                }
+
+                return Ok(mapper.Map<List<AsignacionFormularioDTO>>(asignacionesFormulario));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor");
+            }
+        }
+
         [HttpGet("obtener-por-id/{id:int}")]
         public async Task<ActionResult<AsignacionFormularioDTO>> GetById(int id)
         {
