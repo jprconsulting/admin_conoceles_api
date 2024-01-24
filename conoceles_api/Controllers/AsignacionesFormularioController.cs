@@ -92,6 +92,45 @@ namespace conoceles_api.Controllers
             }
         }
 
+        [HttpPut("editar-asignacion")]
+        public async Task<ActionResult> EditarAsignacion([FromBody] AsignacionFormularioDTO dto)
+        {
+            if (dto == null || dto.Formulario == null)
+            {
+                return BadRequest("Los parámetros no son válidos");
+            }
+
+            var formulario = await context.Formularios.SingleOrDefaultAsync(f => f.Id == dto.Formulario.Id);
+
+            if (formulario == null)
+            {
+                return NotFound("Formulario no encontrado");
+            }
+
+            var asignacion = await context.AsignacionesFormulario
+                .Include(a => a.Formulario)
+                .FirstOrDefaultAsync(a => a.Id == dto.Id);
+
+            if (asignacion == null)
+            {
+                return NotFound("Asignación no encontrada");
+            }
+
+            // Actualiza las propiedades del formulario en la asignación con los valores del DTO
+            asignacion.Formulario = formulario;
+
+            try
+            {
+                await context.SaveChangesAsync();
+                return Ok("Asignación editada exitosamente");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor");
+            }
+        }
+
+
         [HttpDelete("eliminar/{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
