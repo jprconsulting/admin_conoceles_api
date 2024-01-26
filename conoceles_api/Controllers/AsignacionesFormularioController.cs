@@ -21,6 +21,33 @@ namespace conoceles_api.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet("obtener-por-candidato-email/{email}")]
+        public async Task<ActionResult<List<AsignacionFormularioDTO>>> GetByCandidatoEmail(string email)
+        {
+
+            try
+            {
+                var asignacionesFormulario = await context.AsignacionesFormulario
+                    .Include(g => g.Formulario)
+                    .Include(c => c.Candidato)
+                    .Where(a => a.Candidato.Email == email)
+                    .OrderBy(u => u.Id)
+                    .ToListAsync();
+
+                if (!asignacionesFormulario.Any())
+                {
+                    return NotFound($"No se encontraron asignaciones de formularios para el candidato con correo electrónico {email}");
+                }
+
+                return Ok(mapper.Map<List<AsignacionFormularioDTO>>(asignacionesFormulario));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor");
+            }
+        }
+
+
         [HttpGet("obtener-por-candidato/{candidatoId:int}")]
         public async Task<ActionResult<List<AsignacionFormularioDTO>>> GetByCandidatoId(int candidatoId)
         {
